@@ -1,0 +1,120 @@
+{% include 'include/html_header.html' %}
+
+    <div class="modal fade" id="edit-modal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Edit gallery</h4>
+                </div>
+                <form action="/gallery/{{gallery.id}}" method="post" class="form-horizontal">
+                    <div class="modal-body">
+
+                        <div class="form-group">
+                            <label for="inputGalleryName" class="col-sm-2 control-label">Name</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" name="inputGalleryName" id="inputGalleryName" placeholder="Edit..." value="{{gallery.name_edit}}">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputGalleryDescription" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" name="inputGalleryDescription" id="inputGalleryDescription" placeholder="Edit...">{{gallery.description_edit}}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputGalleryParent" class="col-sm-2 control-label">Parent</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="inputGalleryParent" id="inputGalleryParent">
+                                    {% for gallery in gallery.gallery_list %}
+                                        <option value="{{gallery.id}}" {% if gallery.selected == 1 %} selected="selected" {% endif %}>{{gallery.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="inputGalleryTags" class="col-sm-2 control-label">Tags</label>
+                            <div class="col-sm-10">
+                                <select class="form-control" name="inputGalleryTags[]" id="inputGalleryTags" multiple>
+                                    {% for tag in gallery.tag_list %}
+                                        <option value="{{tag.id}}" {% if tag.selected == 1 %} selected="selected" {% endif %}>{{tag.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    <input type="checkbox" name="inputGalleryCombinedView" id="inputGalleryCombinedView" {% if gallery.combined_view == 1 %}checked="checked"{% endif %}>
+                                    <label for="inputGalleryCombinedView" class="control-label">Show images when there are subgalleries</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="checkbox">
+                                <div class="col-sm-2"></div>
+                                <div class="col-sm-10">
+                                    <input type="checkbox" name="inputGalleryUseTags" id="inputGalleryUseTags" {% if gallery.use_tags == 1 %}checked="checked"{% endif %}>
+                                    <label for="inputGalleryUseTags" class="control-label">Populate from tags</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-sm-2"></div>
+                            <div class="col-sm-10 error" id="editErrorContainer"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" name="inputGalleryId" value="{{gallery.id}}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Save changes">
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    {% include 'include/breadcrumb.html' %}
+
+    <div class="pull-right">
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" id="lotEdit" title="Edit lot" data-toggle="tooltip"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button type="button" class="btn btn-default" id="lotDelete" title="Delete lot" data-toggle="tooltip"><span class="glyphicon glyphicon-trash"></span></button>
+        </div>
+    </div>
+
+    <h1>{{lot.name}}</h1>
+
+	<h3>Bids</h3>
+
+	<h4>Highest bid</h4>
+	<p>
+		&pound;{{bids[0].amount | number_format(2)}}
+	</p>
+
+	<a href="#bidHistory" data-toggle="collapse" class="btn btn-info">
+		Show bid history
+	</a>
+
+	<div id="bidHistory" class="collapse panel panel-default" style="width: 25%">
+		<ul>
+			{% for bid in bids %}
+			<li>
+				<h4>&pound;{{bid.amount | number_format(2)}}</h4>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+
+    <script>
+        var editError = "{{lot.edit_error | raw}}";
+    </script>
+
+{% include 'include/html_footer.html' %}

@@ -1,0 +1,7 @@
+<ol class="breadcrumb">
+    <li><a href="/">Home</a></li>
+    {% for crumb in breadcrumb %}
+        <li><a href="/lots/{{crumb.id}}">{{crumb.name}}</a></li>
+    {% endfor %}
+    <li>{{lot.name}}</li>
+</ol>

@@ -1,0 +1,21 @@
+{% include 'include/html_header.html' %}
+
+    {% include 'include/breadcrumb.html' %}
+
+    <div class="pull-right">
+        <div class="btn-group" role="group" aria-label="...">
+            <button type="button" class="btn btn-default" id="lotAdd" title="Add lot" data-toggle="tooltip"><span class="glyphicon glyphicon-plus"></span></button>
+        </div>
+    </div>
+
+    <p>
+        Auctions!
+    </p>
+
+    {% include 'include/lotlist.html' %}
+
+    <script>
+        var editError = "{{auction.edit_error | raw}}";
+    </script>
+
+{% include 'include/html_footer.html' %}
